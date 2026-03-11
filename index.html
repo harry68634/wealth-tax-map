@@ -35,6 +35,16 @@ height:650px;
 width:100%;
 }
 
+/* info panel */
+
+.info{
+padding:10px;
+background:white;
+box-shadow:0 0 6px rgba(0,0,0,0.3);
+border-radius:5px;
+font-size:14px;
+}
+
 .legend{
 background:white;
 padding:10px;
@@ -61,9 +71,8 @@ opacity:0.8;
 <h2>Wealth Taxes in Europe</h2>
 
 <p>
-This interactive map shows European countries that currently have or previously
-had a net wealth tax. Hover over a country to see its name and click it to see
-information about when the tax was introduced or abolished.
+Hover over a country to see information about whether it currently has,
+previously had, or never had a net wealth tax.
 </p>
 
 <div id="map"></div>
@@ -75,28 +84,26 @@ information about when the tax was introduced or abolished.
 
 var geojson;
 
-// Create map centered on Europe with zoom limits
+// create map
 var map = L.map('map', {
 minZoom:3,
 maxZoom:7
 }).setView([54,15],4);
 
-// Restrict map bounds to Europe
+// restrict bounds
 map.setMaxBounds([
 [30,-25],
 [75,45]
 ]);
 
-// Base map layer
+// base map
 L.tileLayer(
-'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-{
-maxZoom:7
-}
+'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
 ).addTo(map);
 
 
-// Colour function
+// colour function
+
 function getColor(status){
 
 if(status=="current") return "#b2182b";
@@ -107,7 +114,8 @@ return "#e0e0e0";
 }
 
 
-// Country style
+// style countries
+
 function style(feature){
 
 var name = feature.properties.NAME || feature.properties.name;
@@ -120,7 +128,6 @@ return{
 
 fillColor:getColor(status),
 weight:1,
-opacity:1,
 color:"white",
 fillOpacity:0.7
 
@@ -129,45 +136,25 @@ fillOpacity:0.7
 }
 
 
-// Highlight on hover
-function highlightFeature(e){
+// info box
 
-var layer = e.target;
+var info = L.control();
 
-layer.setStyle({
-weight:3,
-color:"#444",
-fillOpacity:0.9
-});
+info.onAdd = function(){
 
-}
+this._div = L.DomUtil.create('div','info');
 
+this.update();
 
-// Reset highlight
-function resetHighlight(e){
-geojson.resetStyle(e.target);
-}
+return this._div;
 
+};
 
-// Country interaction
-function onEachFeature(feature,layer){
-
-var name = feature.properties.NAME || feature.properties.name;
-
-var data = wealthTaxData[name];
-
-layer.on({
-mouseover: highlightFeature,
-mouseout: resetHighlight
-});
-
-layer.bindTooltip(name);
-
-var popupContent;
+info.update = function(data,name){
 
 if(data){
 
-popupContent =
+this._div.innerHTML =
 "<b>"+name+"</b><br>"+
 "Status: "+data.status+"<br>"+
 "Start: "+data.start+"<br>"+
@@ -176,19 +163,75 @@ popupContent =
 
 }
 
-else{
+else if(name){
 
-popupContent =
+this._div.innerHTML =
 "<b>"+name+"</b><br>No wealth tax";
 
 }
 
-layer.bindPopup(popupContent);
+else{
+
+this._div.innerHTML =
+"<b>Hover over a country</b>";
+
+}
+
+};
+
+info.addTo(map);
+
+
+// highlight
+
+function highlightFeature(e){
+
+var layer = e.target;
+
+var name = layer.feature.properties.NAME || layer.feature.properties.name;
+
+var data = wealthTaxData[name];
+
+layer.setStyle({
+weight:3,
+color:"#444",
+fillOpacity:0.9
+});
+
+info.update(data,name);
 
 }
 
 
-// Load Europe map
+// reset
+
+function resetHighlight(e){
+
+geojson.resetStyle(e.target);
+
+info.update();
+
+}
+
+
+// interaction
+
+function onEachFeature(feature,layer){
+
+var name = feature.properties.NAME || feature.properties.name;
+
+layer.on({
+mouseover: highlightFeature,
+mouseout: resetHighlight
+});
+
+layer.bindTooltip(name);
+
+}
+
+
+// load map
+
 fetch("./europe.geojson")
 
 .then(res => res.json())
@@ -203,7 +246,8 @@ onEachFeature:onEachFeature
 });
 
 
-// Legend
+// legend
+
 var legend = L.control({position:"bottomright"});
 
 legend.onAdd = function(){
