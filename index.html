@@ -4,7 +4,6 @@
 <head>
 
 <meta charset="utf-8">
-
 <title>European Wealth Tax Map</title>
 
 <link rel="stylesheet"
@@ -35,8 +34,6 @@ height:650px;
 width:100%;
 }
 
-/* info panel */
-
 .info{
 padding:10px;
 background:white;
@@ -62,6 +59,11 @@ margin-right:8px;
 opacity:0.8;
 }
 
+.sliderBox{
+text-align:center;
+margin:10px;
+}
+
 </style>
 
 </head>
@@ -71,9 +73,27 @@ opacity:0.8;
 <h2>Wealth Taxes in Europe</h2>
 
 <p>
-Hover over a country to see information about whether it currently has,
-previously had, or never had a net wealth tax.
+Move the timeline slider to see which countries had wealth taxes in a given year.
+Hover over a country to see detailed information.
 </p>
+
+<div class="sliderBox">
+
+<label><b>Year:</b></label>
+
+<input
+type="range"
+id="yearSlider"
+min="1900"
+max="2025"
+value="2025"
+step="1"
+style="width:300px"
+>
+
+<span id="yearLabel">2025</span>
+
+</div>
 
 <div id="map"></div>
 
@@ -83,38 +103,44 @@ previously had, or never had a net wealth tax.
 <script>
 
 var geojson;
+var currentYear = 2025;
 
-// create map
-var map = L.map('map', {
+var map = L.map('map',{
 minZoom:3,
 maxZoom:7
 }).setView([54,15],4);
 
-// restrict bounds
 map.setMaxBounds([
 [30,-25],
 [75,45]
 ]);
 
-// base map
 L.tileLayer(
 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
 ).addTo(map);
 
 
-// colour function
+/* colour logic */
 
-function getColor(status){
+function getColor(data){
 
-if(status=="current") return "#b2182b";
-if(status=="former") return "#ef8a62";
+if(!data) return "#e0e0e0";
+
+if(data.start <= currentYear &&
+(!data.end || data.end >= currentYear)){
+return "#b2182b";
+}
+
+if(data.end && data.end < currentYear){
+return "#ef8a62";
+}
 
 return "#e0e0e0";
 
 }
 
 
-// style countries
+/* style */
 
 function style(feature){
 
@@ -122,11 +148,9 @@ var name = feature.properties.NAME || feature.properties.name;
 
 var data = wealthTaxData[name];
 
-var status = data ? data.status : "none";
-
 return{
 
-fillColor:getColor(status),
+fillColor:getColor(data),
 weight:1,
 color:"white",
 fillOpacity:0.7
@@ -136,7 +160,7 @@ fillOpacity:0.7
 }
 
 
-// info box
+/* info panel */
 
 var info = L.control();
 
@@ -155,11 +179,13 @@ info.update = function(data,name){
 if(data){
 
 this._div.innerHTML =
-"<b>"+name+"</b><br>"+
-"Status: "+data.status+"<br>"+
-"Start: "+data.start+"<br>"+
-"End: "+(data.end || "Present")+
-"<br>"+(data.notes || "");
+"<b>"+name+"</b><br>" +
+"Status: "+data.status+"<br>" +
+"Years: "+data.start+" – "+(data.end || "Present")+"<br>" +
+"Rate: "+(data.rate || "N/A")+"<br>" +
+"Threshold: "+(data.threshold || "N/A")+"<br>" +
+"Revenue: "+(data.revenue || "N/A")+"<br>" +
+(data.notes ? "<i>"+data.notes+"</i>" : "");
 
 }
 
@@ -182,7 +208,7 @@ this._div.innerHTML =
 info.addTo(map);
 
 
-// highlight
+/* hover effects */
 
 function highlightFeature(e){
 
@@ -202,9 +228,6 @@ info.update(data,name);
 
 }
 
-
-// reset
-
 function resetHighlight(e){
 
 geojson.resetStyle(e.target);
@@ -214,7 +237,7 @@ info.update();
 }
 
 
-// interaction
+/* interactions */
 
 function onEachFeature(feature,layer){
 
@@ -230,7 +253,7 @@ layer.bindTooltip(name);
 }
 
 
-// load map
+/* load geojson */
 
 fetch("./europe.geojson")
 
@@ -246,7 +269,7 @@ onEachFeature:onEachFeature
 });
 
 
-// legend
+/* legend */
 
 var legend = L.control({position:"bottomright"});
 
@@ -265,6 +288,21 @@ return div;
 };
 
 legend.addTo(map);
+
+
+/* timeline slider */
+
+document
+.getElementById("yearSlider")
+.addEventListener("input",function(){
+
+currentYear = this.value;
+
+document.getElementById("yearLabel").innerText = currentYear;
+
+geojson.setStyle(style);
+
+});
 
 </script>
 
