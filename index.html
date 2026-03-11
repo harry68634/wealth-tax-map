@@ -135,7 +135,7 @@ layer.bindPopup(popupContent);
 
 
 // load Europe GeoJSON
-fetch("europe.topojson")
+fetch("europe.geojson")
 
 .then(res => res.json())
 
@@ -147,4 +147,5 @@ style:style,
 onEachFeature:onEachFeature
 
 }).addTo(map);
+
 
