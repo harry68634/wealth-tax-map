@@ -1,46 +1,41 @@
 var wealthTaxData = {
 
-"Norway": {
-status: "current",
-start: 1892,
-notes: "Net wealth tax"
+"France": {
+status: "former",
+start: 1982,
+end: 2017,
+rate: "0.5–1.5%",
+threshold: "€1.3m",
+revenue: "0.2% of GDP",
+notes: "Replaced with real estate wealth tax"
 },
 
 "Spain": {
 status: "current",
 start: 1977,
-notes: "Reintroduced in 2011"
+end: null,
+rate: "0.2–3.5%",
+threshold: "€700k",
+revenue: "0.2% of GDP",
+notes: "Temporarily abolished in 2008 and reintroduced in 2011"
 },
 
-"Switzerland": {
+"Norway": {
 status: "current",
-start: 1840,
-notes: "Cantonal wealth taxes"
-},
-
-"France": {
-status: "former",
-start: 1982,
-end: 2017,
-notes: "Replaced with real estate wealth tax"
-},
-
-"Germany": {
-status: "former",
-start: 1952,
-end: 1997
+start: 1892,
+end: null,
+rate: "1%",
+threshold: "1.7m NOK",
+revenue: "0.4% of GDP"
 },
 
 "Sweden": {
 status: "former",
 start: 1947,
-end: 2007
-},
-
-"Finland": {
-status: "former",
-start: 1919,
-end: 2006
+end: 2007,
+rate: "1.5%",
+threshold: "SEK 1.5m",
+notes: "Abolished due to capital flight concerns"
 },
 
 "Denmark": {
@@ -49,34 +44,19 @@ start: 1903,
 end: 1997
 },
 
-"Austria": {
+"Germany": {
 status: "former",
-start: 1954,
-end: 1994
+start: 1893,
+end: 1997,
+notes: "Suspended after constitutional court ruling"
 },
 
-"Luxembourg": {
-status: "former",
-start: 1934,
-end: 2006
-},
-
-"Netherlands": {
-status: "former",
-start: 1965,
-end: 2001
-},
-
-"Iceland": {
-status: "former",
-start: 1984,
-end: 2006
-},
-
-"Ireland": {
-status: "former",
-start: 1975,
-end: 1978
+"Switzerland": {
+status: "current",
+start: 1840,
+end: null,
+rate: "0.1–1%",
+notes: "Collected at cantonal level"
 }
 
 };
