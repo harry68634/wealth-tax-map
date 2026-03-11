@@ -83,7 +83,7 @@ return "#dddddd";
 // style countries
 function style(feature){
 
-var name = feature.properties.name;
+var name = feature.properties.NAME || feature.properties.name;
 
 var data = wealthTaxData[name];
 
@@ -105,7 +105,7 @@ fillOpacity:0.7
 // popup info
 function onEachFeature(feature,layer){
 
-var name = feature.properties.name;
+var name = feature.properties.NAME || feature.properties.name;
 
 var data = wealthTaxData[name];
 
@@ -147,6 +147,7 @@ style:style,
 onEachFeature:onEachFeature
 
 }).addTo(map);
+
 
 
 
