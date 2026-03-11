@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 
 <meta charset="utf-8">
@@ -19,7 +20,14 @@ padding:0;
 
 h2{
 text-align:center;
-margin:10px;
+margin-top:15px;
+}
+
+p{
+text-align:center;
+max-width:800px;
+margin:auto;
+margin-bottom:10px;
 }
 
 #map{
@@ -32,6 +40,8 @@ background:white;
 padding:10px;
 line-height:1.5em;
 box-shadow:0 0 6px rgba(0,0,0,0.3);
+border-radius:5px;
+font-size:14px;
 }
 
 .legend i{
@@ -39,7 +49,7 @@ width:15px;
 height:15px;
 float:left;
 margin-right:8px;
-opacity:0.7;
+opacity:0.8;
 }
 
 </style>
@@ -50,6 +60,12 @@ opacity:0.7;
 
 <h2>Wealth Taxes in Europe</h2>
 
+<p>
+This interactive map shows European countries that currently have or previously
+had a net wealth tax. Hover over a country to see its name and click it to see
+information about when the tax was introduced or abolished.
+</p>
+
 <div id="map"></div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -57,30 +73,41 @@ opacity:0.7;
 
 <script>
 
-// create map centered on Europe
-var map = L.map('map').setView([54,15],4);
+var geojson;
 
-// base map
+// Create map centered on Europe with zoom limits
+var map = L.map('map', {
+minZoom:3,
+maxZoom:7
+}).setView([54,15],4);
+
+// Restrict map bounds to Europe
+map.setMaxBounds([
+[30,-25],
+[75,45]
+]);
+
+// Base map layer
 L.tileLayer(
 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
 {
-maxZoom: 6
+maxZoom:7
 }
 ).addTo(map);
 
 
-// colour logic
+// Colour function
 function getColor(status){
 
-if(status=="current") return "#d73027";
-if(status=="former") return "#fee08b";
+if(status=="current") return "#b2182b";
+if(status=="former") return "#ef8a62";
 
-return "#dddddd";
+return "#e0e0e0";
 
 }
 
 
-// style countries
+// Country style
 function style(feature){
 
 var name = feature.properties.NAME || feature.properties.name;
@@ -102,12 +129,39 @@ fillOpacity:0.7
 }
 
 
-// popup info
+// Highlight on hover
+function highlightFeature(e){
+
+var layer = e.target;
+
+layer.setStyle({
+weight:3,
+color:"#444",
+fillOpacity:0.9
+});
+
+}
+
+
+// Reset highlight
+function resetHighlight(e){
+geojson.resetStyle(e.target);
+}
+
+
+// Country interaction
 function onEachFeature(feature,layer){
 
 var name = feature.properties.NAME || feature.properties.name;
 
 var data = wealthTaxData[name];
+
+layer.on({
+mouseover: highlightFeature,
+mouseout: resetHighlight
+});
+
+layer.bindTooltip(name);
 
 var popupContent;
 
@@ -134,24 +188,22 @@ layer.bindPopup(popupContent);
 }
 
 
-// load Europe GeoJSON
+// Load Europe map
 fetch("./europe.geojson")
 
 .then(res => res.json())
 
 .then(function(data){
 
-L.geoJson(data,{
-
+geojson = L.geoJson(data,{
 style:style,
 onEachFeature:onEachFeature
-
 }).addTo(map);
 
 });
 
 
-// legend
+// Legend
 var legend = L.control({position:"bottomright"});
 
 legend.onAdd = function(){
@@ -159,10 +211,10 @@ legend.onAdd = function(){
 var div = L.DomUtil.create("div","legend");
 
 div.innerHTML =
-"<b>Wealth Tax</b><br>"+
-"<i style='background:#d73027'></i> Current<br>"+
-"<i style='background:#fee08b'></i> Former<br>"+
-"<i style='background:#dddddd'></i> None";
+"<b>Wealth Tax Status</b><br>"+
+"<i style='background:#b2182b'></i> Current<br>"+
+"<i style='background:#ef8a62'></i> Former<br>"+
+"<i style='background:#e0e0e0'></i> None";
 
 return div;
 
