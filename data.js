@@ -7,7 +7,7 @@ end: 2017,
 rate: "0.5–1.5%",
 threshold: "€1.3m",
 revenue: "0.2% of GDP",
-notes: "Replaced with real estate wealth tax"
+notes: "Replaced with real estate wealth tax (IFI)"
 },
 
 "Spain": {
@@ -57,6 +57,38 @@ start: 1840,
 end: null,
 rate: "0.1–1%",
 notes: "Collected at cantonal level"
+},
+
+"Austria": {
+status: "former",
+start: 1954,
+end: 1994,
+notes: "Abolished following constitutional court ruling"
+},
+
+"Finland": {
+status: "former",
+start: 1920,
+end: 2006,
+rate: "0.9%",
+notes: "Abolished to improve capital competitiveness"
+},
+
+"Netherlands": {
+status: "former",
+start: 1892,
+end: 2001,
+rate: "Varied",
+notes: "Replaced by a presumptive return tax on savings and investments"
+},
+
+"Iceland": {
+status: "former",
+start: 2010,
+end: 2014,
+rate: "1.5–2%",
+threshold: "High net-worth individuals",
+notes: "Temporary post-financial crisis wealth tax"
 }
 
 };
