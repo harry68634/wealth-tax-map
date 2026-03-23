@@ -35,6 +35,7 @@ start: 1947,
 end: 2007,
 rate: "1.5%",
 threshold: "SEK 1.5m",
+revenue: "0.2% of GDP",
 notes: "Abolished due to capital flight concerns"
 },
 
@@ -42,13 +43,18 @@ notes: "Abolished due to capital flight concerns"
 status: "former",
 start: 1903,
 end: 1997,
-revenue: "0.2% of GDP"
+rate: "up to 1%",
+threshold: "£200,000",
+revenue: "0.2% of GDP",
+notes: "Abolished due to concerns about capital mobility and efficiency"
 },
 
 "Germany": {
 status: "former",
 start: 1893,
 end: 1997,
+rate: "1%",
+threshold: "£60,000",
 revenue: "0.1% of GDP",
 notes: "Suspended after constitutional court ruling"
 },
@@ -58,6 +64,8 @@ status: "current",
 start: 1840,
 end: null,
 rate: "0.1–1%",
+threshold: "£50,000-£200,000",
+revenue: "1% of GDP",
 notes: "Collected at cantonal level"
 },
 
@@ -65,7 +73,9 @@ notes: "Collected at cantonal level"
 status: "former",
 start: 1954,
 end: 1994,
-notes: "Abolished following constitutional court ruling",
+rate: "1%",
+threshold: "£70,000",
+notes: "Abolished mainly due to low revenue and administrative cost",
 revenue: "0.2% of GDP"
 },
 
@@ -74,6 +84,7 @@ status: "former",
 start: 1920,
 end: 2006,
 rate: "0.9%",
+threshold: "£180,000",
 revenue: "0.1% of GDP",
 notes: "Abolished to improve capital competitiveness"
 },
@@ -82,8 +93,9 @@ notes: "Abolished to improve capital competitiveness"
 status: "former",
 start: 1892,
 end: 2001,
-rate: "Varied",
+rate: "0.7-1%",
 revenue: "0.2% of GDP",
+threshold:"£100,000",
 notes: "Replaced by a presumptive return tax on savings and investments"
 },
 
