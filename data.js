@@ -41,13 +41,15 @@ notes: "Abolished due to capital flight concerns"
 "Denmark": {
 status: "former",
 start: 1903,
-end: 1997
+end: 1997,
+revenue: "0.2% of GDP"
 },
 
 "Germany": {
 status: "former",
 start: 1893,
 end: 1997,
+revenue: "0.1% of GDP",
 notes: "Suspended after constitutional court ruling"
 },
 
@@ -63,7 +65,8 @@ notes: "Collected at cantonal level"
 status: "former",
 start: 1954,
 end: 1994,
-notes: "Abolished following constitutional court ruling"
+notes: "Abolished following constitutional court ruling",
+revenue: "0.2% of GDP"
 },
 
 "Finland": {
@@ -71,6 +74,7 @@ status: "former",
 start: 1920,
 end: 2006,
 rate: "0.9%",
+revenue: "0.1% of GDP",
 notes: "Abolished to improve capital competitiveness"
 },
 
@@ -79,6 +83,7 @@ status: "former",
 start: 1892,
 end: 2001,
 rate: "Varied",
+revenue: "0.2% of GDP",
 notes: "Replaced by a presumptive return tax on savings and investments"
 },
 
@@ -88,6 +93,7 @@ start: 2010,
 end: 2014,
 rate: "1.5–2%",
 threshold: "High net-worth individuals",
+revenue: "0.5% of GDP",
 notes: "Temporary post-financial crisis wealth tax"
 }
 
